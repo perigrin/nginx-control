@@ -20,4 +20,5 @@ cover_db
 ^TODO$
 ^PLAN$
 ^benchmarks$
+^parsing$
 ^\._.*$
