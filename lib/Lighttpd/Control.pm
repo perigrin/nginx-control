@@ -200,19 +200,133 @@ __END__
 
 =head1 NAME
 
-Lighttpd::Control - A Moosey solution to this problem
+Lighttpd::Control - Simple class to manage a Lighttpd server
 
 =head1 SYNOPSIS
 
+  #!perl
+  
+  use strict;
+  use warnings;
+  
   use Lighttpd::Control;
+  
+  my ($command) = @ARGV;
+  
+  my $ctl = Lighttpd::Control->new(
+      config_file => [qw[ conf lighttpd.conf ]],
+      # PID file can also be discovered automatically 
+      # from the conf, or if you prefer you can specify
+      pid_file    => 'lighttpd.control.pid',    
+  );
+  
+  $ctl->start if lc($command) eq 'start';
+  $ctl->stop  if lc($command) eq 'stop';
 
 =head1 DESCRIPTION
+
+This is a packaging and cleaning up of a script we have been using 
+for a while now to manage our Lighttpd servers. This is an early 
+release with only the bare bones functionality we needed, future 
+releases will surely include more functionality. Suggestions and 
+crazy ideas welcomed, especially in the form of patches with tests.
+
+=head1 ATTRIBUTES
+
+=over 4
+
+=item I<config_file>
+
+This is a L<Path::Class::File> instance for the configuration file.
+
+=item I<binary_path>
+
+This is a L<Path::Class::File> instance pointing to the Lighttpd 
+binary. This can be autodiscovered or you can specify it via the 
+constructor.
+
+=item I<pid_file>
+
+This is a L<Path::Class::File> instance pointing to the Lighttpd 
+pid file. This can be autodiscovered from the config file or you 
+can specify it via the constructor.
+
+=item I<server_pid>
+
+This is the PID of the live server.
+
+=back
 
 =head1 METHODS 
 
 =over 4
 
-=item B<>
+=item B<start>
+
+Starts the Lighttpd server that is currently being controlled by this 
+instance. It will also run the pre_startup and post_startup hooks.
+
+=item B<stop>
+
+Stops the Lighttpd server that is currently being controlled by this 
+instance. It will also run the pre_shutdown and post_shutdown hooks.
+
+=item B<is_server_running>
+
+Checks to see if the Lighttpd server that is currently being controlled 
+by this instance is running or not (based on the state of the PID file).
+
+=item B<log>
+
+Simple logger that you can use, it just sends the output to STDERR via
+the C<warn> function.
+
+=back
+
+=head1 AUGMENTABLE METHODS
+
+These methods can be augmented in a subclass to add extra functionality 
+to your control script. Here is an example of how they might be used
+to integrate with L<FCGI::Engine::Manager> (For a complete, working 
+version of this, take a look at the file F<003_basic_with_fcgi_engine.t> 
+in the test suite).
+
+  package My::Lighttpd::Control;
+  use Moose;
+  
+  extends 'Lighttpd::Control';
+  
+  has 'fcgi_manager' => (
+      is      => 'ro',
+      isa     => 'FCGI::Engine::Manager',   
+      default => sub {
+          FCGI::Engine::Manager->new(
+              conf => 'conf/fcgi.engine.yml'
+          )            
+      },
+  );
+  
+  augment post_startup => sub {
+      my $self = shift;
+      $self->log('Starting the FCGI Engine Manager ...');
+      $self->fcgi_manager->start;        
+  };
+  
+  augment post_shutdown => sub {
+      my $self = shift;
+      $self->log('Stopping the FCGI Engine Manager ...');
+      $self->fcgi_manager->stop; 
+  };    
+
+=over 4
+
+=item B<pre_startup>
+
+=item B<post_startup>
+
+=item B<pre_shutdown>
+
+=item B<post_shutdown>
 
 =back
 
@@ -225,6 +339,8 @@ to cpan-RT.
 =head1 AUTHOR
 
 Stevan Little E<lt>stevan.little@iinteractive.comE<gt>
+
+Based on code originally developed by Chris Prather.
 
 =head1 COPYRIGHT AND LICENSE
 

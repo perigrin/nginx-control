@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More no_plan => 1;
+use Test::More tests => 8;
 use Test::Exception;
 use Test::WWW::Mechanize;
 
@@ -15,6 +15,11 @@ my $ctl = Lighttpd::Control->new(
     config_file => [qw[ t conf lighttpd.dev.conf ]],
 );
 isa_ok($ctl, 'Lighttpd::Control');
+
+SKIP: {
+    
+skip "No lighttpd installed (or at least none found), why are you testing this anyway?", 6 
+    unless eval { $ctl->binary_path };
 
 ok(!$ctl->is_server_running, '... the server process is not yet running');
 
@@ -37,3 +42,4 @@ sleep(2);
 ok(!-e $ctl->pid_file, '... PID file has been removed by Lighttpd');
 ok(!$ctl->is_server_running, '... the server process is no longer running');
 
+}
