@@ -50,6 +50,11 @@ my $ctl = My::Lighttpd::Control->new(
 );
 isa_ok($ctl, 'Lighttpd::Control');
 
+SKIP: {
+    
+skip "No lighttpd installed (or at least none found), why are you testing this anyway?", 6 
+    unless eval { $ctl->binary_path };
+
 ok(!$ctl->is_server_running, '... the server process is not yet running');
 
 $ctl->start;
@@ -73,3 +78,5 @@ sleep(2);
 
 ok(!-e $ctl->pid_file, '... PID file has been removed by Lighttpd');
 ok(!$ctl->is_server_running, '... the server process is no longer running');
+
+}
