@@ -12,20 +12,20 @@ BEGIN {
 }
 
 my $ctl = Nginx::Control->new(
-    config_file => [qw[ t conf lighttpd.dev.conf ]],
+    config_file => [qw[ t conf nginx.dev.conf ]],
 );
 isa_ok($ctl, 'Nginx::Control');
 
 SKIP: {
     
-skip "No lighttpd installed (or at least none found), why are you testing this anyway?", 6 
+skip "No nginx installed (or at least none found), why are you testing this anyway?", 6 
     unless eval { $ctl->binary_path };
 
 ok(!$ctl->is_server_running, '... the server process is not yet running');
 
 $ctl->start;
 
-diag "Wait a moment for lighttpd to start";
+diag "Wait a moment for nginx to start";
 sleep(2);
 
 ok($ctl->is_server_running, '... the server process is now running');
