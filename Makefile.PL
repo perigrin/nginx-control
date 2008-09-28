@@ -5,8 +5,8 @@ use inc::Module::Install;
 die "This module is not for use on Windows, sorry."
     if  $^O eq 'Win32' or $^O eq 'cygwin';
 
-name 'Lighttpd-Control';
-all_from 'lib/Lighttpd/Control.pm';
+name 'Nginx-Control';
+all_from 'lib/Nginx/Control.pm';
 license 'perl';
 
 # prereqs

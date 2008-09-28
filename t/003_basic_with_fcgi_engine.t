@@ -13,14 +13,14 @@ BEGIN {
     eval "use FCGI::Engine::Manager";
     plan skip_all => "FCGI::Engine::Manager required for this test" if $@;    
     plan tests => 12;    
-    use_ok('Lighttpd::Control');
+    use_ok('Nginx::Control');
 }
 
 {
-    package My::Lighttpd::Control;
+    package My::Nginx::Control;
     use Moose;
     
-    extends 'Lighttpd::Control';
+    extends 'Nginx::Control';
     
     has 'fcgi_manager' => (
         is      => 'ro',
@@ -45,10 +45,10 @@ BEGIN {
     };    
 }
 
-my $ctl = My::Lighttpd::Control->new(
+my $ctl = My::Nginx::Control->new(
     config_file => [qw[ t conf lighttpd.fcgi.conf ]],
 );
-isa_ok($ctl, 'Lighttpd::Control');
+isa_ok($ctl, 'Nginx::Control');
 
 SKIP: {
     
@@ -73,10 +73,10 @@ for (1 .. 3) {
 
 $ctl->stop;
 
-diag "Wait a moment for Lighttpd to stop";
+diag "Wait a moment for Nginx to stop";
 sleep(2);
 
-ok(!-e $ctl->pid_file, '... PID file has been removed by Lighttpd');
+ok(!-e $ctl->pid_file, '... PID file has been removed by Nginx');
 ok(!$ctl->is_server_running, '... the server process is no longer running');
 
 }

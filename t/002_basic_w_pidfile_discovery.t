@@ -8,13 +8,13 @@ use Test::Exception;
 use Test::WWW::Mechanize;
 
 BEGIN {
-    use_ok('Lighttpd::Control');
+    use_ok('Nginx::Control');
 }
 
-my $ctl = Lighttpd::Control->new(
+my $ctl = Nginx::Control->new(
     config_file => [qw[ t conf lighttpd.dev.conf ]],
 );
-isa_ok($ctl, 'Lighttpd::Control');
+isa_ok($ctl, 'Nginx::Control');
 
 SKIP: {
     
@@ -36,10 +36,10 @@ $mech->content_contains($ctl->server_pid, '... got the content we expected');
 
 $ctl->stop;
 
-diag "Wait a moment for Lighttpd to stop";
+diag "Wait a moment for Nginx to stop";
 sleep(2);
 
-ok(!-e $ctl->pid_file, '... PID file has been removed by Lighttpd');
+ok(!-e $ctl->pid_file, '... PID file has been removed by Nginx');
 ok(!$ctl->is_server_running, '... the server process is no longer running');
 
 }
