@@ -1,6 +1,4 @@
-Revision history for Perl extension Lighttpd-Control
+Revision history for Perl extension Nginx-Control
 
-0.01 Friday, Sept. 26, 2008
-    - I am getting sick of copy/pasting this stuff 
-      between all the projects at work, so I am packaging
-      it up for release.
+0.01 2008-09-28
+    - Steal Lighttpd-Control

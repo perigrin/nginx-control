@@ -1,10 +1,10 @@
-package Lighttpd::Control;
+package Nginx::Control;
 use Moose;
 use MooseX::Types::Path::Class;
 use Path::Class;
 
 our $VERSION   = '0.01';
-our $AUTHORITY = 'cpan:STEVAN';
+our $AUTHORITY = 'cpan:PERIGRIN';
 
 has 'config_file' => (
     is       => 'rw',
@@ -69,17 +69,17 @@ sub _find_pid_file {
     # find the pid file (that I know of)
     my @approaches = (
         sub { $config_file->slurp(chomp => 1) },
-        sub {
-            # NOTE:
-            # if we couldn't get the full path 
-            # from the config file itself, then 
-            # we use the -p option on the lighttpd
-            # binary to give us the parsed config
-            # which will have the full path in it.
-            # - SL
-            my $cli = join " " => $self->_construct_command_line('-p');
-            `$cli`;            
-        }
+        # sub {
+        #     # NOTE:
+        #     # if we couldn't get the full path 
+        #     # from the config file itself, then 
+        #     # we use the -p option on the lighttpd
+        #     # binary to give us the parsed config
+        #     # which will have the full path in it.
+        #     # - SL
+        #     my $cli = join " " => $self->_construct_command_line('-p');
+        #     `$cli`;            
+        # }
     );
     
     foreach my $approach (@approaches) {    
@@ -164,7 +164,7 @@ sub start {
     }
 
     $self->post_startup;
-    $self->log("Lighttpd started.");    
+    $self->log("Nginx started.");    
 }
 
 sub stop {
@@ -184,7 +184,7 @@ sub stop {
         kill 2, $self->server_pid;
         
         $self->post_shutdown;
-        $self->log("Lighttpd stopped.");    
+        $self->log("Nginx stopped.");    
         
         return;
     }
@@ -200,7 +200,7 @@ __END__
 
 =head1 NAME
 
-Lighttpd::Control - Simple class to manage a Lighttpd server
+Nginx::Control - Simple class to manage a Nginx server
 
 =head1 SYNOPSIS
 
@@ -209,11 +209,11 @@ Lighttpd::Control - Simple class to manage a Lighttpd server
   use strict;
   use warnings;
   
-  use Lighttpd::Control;
+  use Nginx::Control;
   
   my ($command) = @ARGV;
   
-  my $ctl = Lighttpd::Control->new(
+  my $ctl = Nginx::Control->new(
       config_file => [qw[ conf lighttpd.conf ]],
       # PID file can also be discovered automatically 
       # from the conf, or if you prefer you can specify
@@ -226,7 +226,7 @@ Lighttpd::Control - Simple class to manage a Lighttpd server
 =head1 DESCRIPTION
 
 This is a packaging and cleaning up of a script we have been using 
-for a while now to manage our Lighttpd servers. This is an early 
+for a while now to manage our Nginx servers. This is an early 
 release with only the bare bones functionality we needed, future 
 releases will surely include more functionality. Suggestions and 
 crazy ideas welcomed, especially in the form of patches with tests.
@@ -241,13 +241,13 @@ This is a L<Path::Class::File> instance for the configuration file.
 
 =item I<binary_path>
 
-This is a L<Path::Class::File> instance pointing to the Lighttpd 
+This is a L<Path::Class::File> instance pointing to the Nginx 
 binary. This can be autodiscovered or you can specify it via the 
 constructor.
 
 =item I<pid_file>
 
-This is a L<Path::Class::File> instance pointing to the Lighttpd 
+This is a L<Path::Class::File> instance pointing to the Nginx 
 pid file. This can be autodiscovered from the config file or you 
 can specify it via the constructor.
 
@@ -263,17 +263,17 @@ This is the PID of the live server.
 
 =item B<start>
 
-Starts the Lighttpd server that is currently being controlled by this 
+Starts the Nginx server that is currently being controlled by this 
 instance. It will also run the pre_startup and post_startup hooks.
 
 =item B<stop>
 
-Stops the Lighttpd server that is currently being controlled by this 
+Stops the Nginx server that is currently being controlled by this 
 instance. It will also run the pre_shutdown and post_shutdown hooks.
 
 =item B<is_server_running>
 
-Checks to see if the Lighttpd server that is currently being controlled 
+Checks to see if the Nginx server that is currently being controlled 
 by this instance is running or not (based on the state of the PID file).
 
 =item B<log>
@@ -291,10 +291,10 @@ to integrate with L<FCGI::Engine::Manager> (For a complete, working
 version of this, take a look at the file F<003_basic_with_fcgi_engine.t> 
 in the test suite).
 
-  package My::Lighttpd::Control;
+  package My::Nginx::Control;
   use Moose;
   
-  extends 'Lighttpd::Control';
+  extends 'Nginx::Control';
   
   has 'fcgi_manager' => (
       is      => 'ro',
