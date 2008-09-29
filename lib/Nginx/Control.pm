@@ -73,17 +73,8 @@ sub _find_pid_file {
     foreach my $approach (@approaches) {
         my @config = $approach->();
         foreach my $line (@config) {
-            if ( $line =~ /^\s+pid\s+(.*);/ ) {
-                my $pid_file = $1;
-
-                # NOTE:
-                # pid file from the config must
-                # be a valid path, which means
-                # it must start and end with quotes
-                # - SL
-                if ( $pid_file =~ /^\"(.*)\"$/ ) {
-                    return Path::Class::File->new($1);
-                }
+            if ( $line =~ /^\s*pid\s+(.*);/ ) {
+                return Path::Class::File->new($1);
             }
         }
     }
@@ -105,8 +96,7 @@ sub _find_binary_path {
 
     for my $prefix (qw(/usr /usr/local /opt/local /sw)) {
         for my $bindir (qw(bin sbin)) {
-            my $nginx =
-              Path::Class::File->new( $prefix, $bindir, 'nginx' );
+            my $nginx = Path::Class::File->new( $prefix, $bindir, 'nginx' );
             return $nginx if -x $nginx;
         }
     }
