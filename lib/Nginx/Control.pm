@@ -212,11 +212,11 @@ Nginx::Control - Simple class to manage a Nginx server
 
 =head1 DESCRIPTION
 
-This is a packaging and cleaning up of a script we have been using 
-for a while now to manage our Nginx servers. This is an early 
-release with only the bare bones functionality we needed, future 
-releases will surely include more functionality. Suggestions and 
-crazy ideas welcomed, especially in the form of patches with tests.
+This is a fork of L<Lighttpd::Control> to work with Nginx, it maintains 100%
+API compatibility. In fact most of this documentation was stolen too. This is
+an early release with only the bare bones functionality needed, future
+releases will surely include more functionality. Suggestions and crazy ideas
+welcomed, especially in the form of patches with tests.
 
 =head1 ATTRIBUTES
 
@@ -325,11 +325,15 @@ to cpan-RT.
 
 =head1 AUTHOR
 
-Stevan Little E<lt>stevan.little@iinteractive.comE<gt>
+Chris Prather E<lt>chris@prather.org$<gt>
 
-Based on code originally developed by Chris Prather.
+Based on L<Lighttpd::Control> by Stevan Little E<lt>stevan.little@iinteractive.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
+
+Copyright 2008 Chris Prather
+
+except for those parts that are 
 
 Copyright 2008 Infinity Interactive, Inc.
 
