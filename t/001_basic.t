@@ -13,7 +13,7 @@ BEGIN {
 
 my $ctl = Nginx::Control->new(
     config_file => [qw[ t conf nginx.dev.conf ]],
-    pid_file    => 'nginx.control.pid',
+    pid_file    => '/tmp/nginx.control.pid', # this doesn't work on < 0.7.04
 );
 isa_ok($ctl, 'Nginx::Control');
 

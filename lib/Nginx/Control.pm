@@ -73,7 +73,7 @@ sub _find_pid_file {
     foreach my $approach (@approaches) {
         my @config = $approach->();
         foreach my $line (@config) {
-            if ( $line =~ /server\.pid\-file\s*\=\s*(.*)/ ) {
+            if ( $line =~ /^\s+pid\s+(.*);/ ) {
                 my $pid_file = $1;
 
                 # NOTE:
