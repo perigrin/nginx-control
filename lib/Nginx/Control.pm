@@ -123,7 +123,7 @@ sub _construct_command_line {
     ( -f $conf )
       || confess "Could not locate configuration file ($conf)";
 
-    ( $self->binary_path, @opts, '-f', $conf->stringify );
+    ( $self->binary_path, @opts, '-c', $conf->stringify );
 }
 
 ## ---------------------------------
