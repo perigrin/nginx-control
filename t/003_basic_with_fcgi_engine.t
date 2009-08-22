@@ -46,7 +46,7 @@ BEGIN {
 }
 
 my $ctl = My::Nginx::Control->new(
-    config_file => [qw[ t conf nginx.fcgi.conf ]],
+    config_file => [$ENV{PWD}, qw[ t conf nginx.fcgi.conf ]],
 );
 isa_ok($ctl, 'Nginx::Control');
 

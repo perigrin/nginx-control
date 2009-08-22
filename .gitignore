@@ -1,0 +1,9 @@
+*.sw[lmnop]
+Makefile
+Makefile.old
+MANIFEST.bak
+blib
+inc
+cover_db
+pm_to_blib
+t/tmp

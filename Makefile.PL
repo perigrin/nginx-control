@@ -17,6 +17,7 @@ requires 'MooseX::Types::Path::Class';
 build_requires 'Test::More';
 build_requires 'Test::Exception';
 build_requires 'Test::WWW::Mechanize';
+build_requires 'Test::TempDir';
 
 tests('t/*.t');
 

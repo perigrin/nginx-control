@@ -12,7 +12,7 @@ BEGIN {
 }
 
 my $ctl = Nginx::Control->new(
-    config_file => [qw[ t conf nginx.dev.conf ]],
+    config_file => [$ENV{PWD}, qw[ t conf nginx.dev.conf ]],
 );
 isa_ok($ctl, 'Nginx::Control');
 
