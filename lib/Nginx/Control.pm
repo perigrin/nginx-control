@@ -5,6 +5,8 @@ use Path::Class;
 
 our $VERSION   = '0.02';
 our $AUTHORITY = 'cpan:PERIGRIN';
+our $NGINX_BIN = 'nginx';
+our @SEARCH_PATH = qw( /usr /usr/local /opt/local /sw );
 
 has 'config_file' => (
     is     => 'rw',
@@ -90,16 +92,16 @@ sub _find_binary_path {
     my $self = shift;
 
     my $nginx = do {
-        my $bin = `which nginx`;
+        my $bin = `which $NGINX_BIN`;
         chomp($bin);
         Path::Class::File->new($bin);
     };
 
     return $nginx if -x $nginx;
 
-    for my $prefix (qw(/usr /usr/local /opt/local /sw)) {
+    for my $prefix (@SEARCH_PATH) {
         for my $bindir (qw(bin sbin)) {
-            my $nginx = Path::Class::File->new( $prefix, $bindir, 'nginx' );
+            my $nginx = Path::Class::File->new( $prefix, $bindir, $NGINX_BIN );
             return $nginx if -x $nginx;
         }
     }
