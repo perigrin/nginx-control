@@ -3,7 +3,7 @@ use Moose;
 use MooseX::Types::Path::Class;
 use Path::Class;
 
-our $VERSION   = '0.02';
+our $VERSION   = '0.03';
 our $AUTHORITY = 'cpan:PERIGRIN';
 our $NGINX_BIN = 'nginx';
 our @SEARCH_PATH = qw( /usr /usr/local /opt/local /sw );
@@ -11,6 +11,12 @@ our @SEARCH_PATH = qw( /usr /usr/local /opt/local /sw );
 has 'config_file' => (
     is     => 'rw',
     isa    => 'Path::Class::File',
+    coerce => 1,
+);
+
+has 'prefix_path' => (
+    is     => 'rw',
+    isa    => 'Path::Class::Dir',
     coerce => 1,
 );
 
@@ -118,7 +124,12 @@ sub _construct_command_line {
     ( -f $conf )
       || confess "Could not locate configuration file ($conf)";
 
-    ( $self->binary_path, @opts, '-c', $conf->stringify );
+    my @cli = ( $self->binary_path, @opts, '-c', $conf->stringify );
+    if ($self->prefix_path) {
+        push @cli, ( '-p', $self->prefix_path->stringify );
+    }
+
+    return @cli;
 }
 
 ## ---------------------------------
@@ -146,6 +157,7 @@ sub start {
     # hook if we wanted to.
     # - SL
     my @cli = $self->_construct_command_line;
+    $self->log( "Command-line: " . join(" ", @cli) );
 
     unless ( system(@cli) == 0 ) {
         $self->log("Could not start nginx (@cli) exited with status $?");
@@ -271,6 +283,13 @@ welcomed, especially in the form of patches with tests.
 =item I<config_file>
 
 This is a L<Path::Class::File> instance for the configuration file.
+
+=item I<prefix_path>
+
+This is an optional L<Path::Class::Dir> instance pointing to the
+root prefix path where you would like Nginx to be started from.
+This will typically point at a location where logs and other sorts
+of files will be stored at start-up time.
 
 =item I<binary_path>
 
