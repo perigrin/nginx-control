@@ -1,4 +1,7 @@
 Revision history for Perl extension Nginx-Control
 
+0.03 2008-01-02
+    - Added prefix_path option to allow nginx to start as an unprivileged user
+
 0.01 2008-09-28
     - Steal Lighttpd-Control
