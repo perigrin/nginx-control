@@ -3,7 +3,7 @@ use Moose;
 use MooseX::Types::Path::Class;
 use Path::Class;
 
-our $VERSION   = '0.03';
+our $VERSION   = '0.04';
 our $AUTHORITY = 'cpan:PERIGRIN';
 our $NGINX_BIN = 'nginx';
 our @SEARCH_PATH = qw( /usr /usr/local /opt/local /sw );
@@ -126,7 +126,7 @@ sub _construct_command_line {
 
     my @cli = ( $self->binary_path, @opts, '-c', $conf->stringify );
     if ($self->prefix_path) {
-        push @cli, ( '-p', $self->prefix_path->stringify );
+        push @cli, ( '-p', $self->prefix_path->stringify . "/" );
     }
 
     return @cli;
