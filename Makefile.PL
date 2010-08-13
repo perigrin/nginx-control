@@ -14,10 +14,10 @@ requires 'Moose' => 0.32;
 requires 'MooseX::Types::Path::Class';
 
 # things the tests need
-build_requires 'Test::More';
-build_requires 'Test::Exception';
-build_requires 'Test::WWW::Mechanize';
-build_requires 'Test::TempDir';
+test_requires 'Test::More';
+test_requires 'Test::Exception';
+test_requires 'Test::WWW::Mechanize';
+test_requires 'Test::TempDir';
 
 tests('t/*.t');
 

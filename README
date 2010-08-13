@@ -1,5 +1,5 @@
-Lighttpd-Control version 0.01
-===========================
+Nginx-Control version 0.04
+==========================
 
 See the individual module documentation for more information
 
@@ -22,9 +22,7 @@ This module requires these other modules and libraries:
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2008 Infinity Interactive, Inc.
-
-http://www.iinteractive.com
+Copyright (C) 2009-2010 Tamarou, LLC
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 

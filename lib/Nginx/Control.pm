@@ -6,7 +6,7 @@ use Path::Class;
 our $VERSION   = '0.04';
 our $AUTHORITY = 'cpan:PERIGRIN';
 our $NGINX_BIN = 'nginx';
-our @SEARCH_PATH = qw( /usr /usr/local /opt/local /sw );
+our @SEARCH_PATH = qw( /usr /usr/local /usr/local/nginx /opt/local /opt/nginx /sw );
 
 has 'config_file' => (
     is     => 'rw',
